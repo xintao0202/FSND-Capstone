@@ -149,3 +149,36 @@ curl http://127.0.0.1:5000/companies/2 -X DELETE
 ```
 {"deleted":"2","success":true}
 ```
+
+4. Setup Application/APIs/Roles in Auth0 account, amd complete `auth.py` accordingly. permissions and roles who can access are
+
+Permissions for `regular user`
+```
+read:news
+read:companies
+```
+
+Additional permissions for `news writer`
+```
+create:news
+edit:news
+delete:news
+```
+
+Additional permissions for `system manager`
+```
+create:companies
+edit:companies
+delete:companies
+``` 
+
+Obtain access token:
+
+First access the login page by type the following in broswer
+
+```
+https://<domain name>/authorize?audience=<identifier>&response_type=token&client_id=<client id>&redirect_uri=<call back page>
+```
+Then assgin the roles to the signed up users
+
+Last re-submit the login page, which will direct to the URL with token

@@ -135,7 +135,7 @@ def create_app(test_config=None):
 
     return jsonify({
       'success': True,
-      'deleted': news_id
+      'deleted': news.id
     })
 
   #----------------------------------------------------------------------------#
@@ -243,7 +243,7 @@ def create_app(test_config=None):
     
     return jsonify({
       'success': True,
-      'deleted': company_id
+      'deleted': company_delete.id
     })
 
   #----------------------------------------------------------------------------#
