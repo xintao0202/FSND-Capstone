@@ -29,3 +29,123 @@ $ pip install -r requirements.txt
 
 ### Run and test scripts locally
 1. Build database models in `models.py` using SQLAlchemy
+2. Make db connections, build API endpoints and error handlers in `app.py` 
+3. To test locally, need create a db in postgres database
+```
+export FLASK_APP=api.py;
+flask run --reload
+```
+API EndPoints tests:
+
+GET '/news'
+- fetches a list of news
+- Request Arguments: None
+- Returns: An object with news objects and success flag
+- Curl Request and Server Response example: 
+```
+curl http://127.0.0.1:5000/news
+```
+
+```
+{"news":
+[{"body":"AstraZeneca (AZN -3.8%) announces positive results from a Phase 3 clinical trial, ETHOS, evaluating Breztri Aerosphere (budesonide/glycopyrronium/formoterol fumarate) in patients with moderate-to-severe chronic obstructive pulmonary disease (COPD). The data were presented virtually at the American Thoracic Society Scientific Symposium, Clinical Trials in Pulmonary Medicine and published in the New England Journal of Medicine.","date_time":"Thu, 25 Jun 2020 15:54:09 GMT","id":1,"title":"AstraZeneca triplet therapy tops doublets in large-scale COPD study"}],
+"success":true}
+
+```
+
+POST '/news'
+- create a news 
+- Request Arguments: A json object contains 'title', 'body', 'date_time'
+- Returns:  A object with two keys- 'success', and 'created' shows the id of the new news
+- Curl Request and Server Response example: 
+```
+curl http://127.0.0.1:5000/news -X POST -H "Content-Type: application/json" -d '{ "title": "Intel new chip", "body": "Intel announced new generation of CPU", "date_time": "2020-05-30 15:30" }'
+```
+```
+{"created":2,"success":true}
+```
+PATCH '/news/int:id'
+- Update a news by id 
+- Request Arguments: news_id
+- Returns:  A object with three keys- 'success', 'updated' shows the id of the news updated, and the content of the updated news
+- Curl Request and Server Response example: 
+```
+curl http://127.0.0.1:5000/news/2 -X PATCH -H "Content-Type: application/json" -d '{ "title": "AMD new chip", "body": "AMD announced new generation of CPU", "date_time": "2020-06-30 15:30" }'
+````
+
+```
+{"news":[{"body":"AMD announced new generation of CPU",
+"date_time":"Tue, 30 Jun 2020 15:30:00 GMT","id":2,"title":"AMD new chip"}],
+"success":true,"updated":2}
+```
+
+DELETE '/news/int:id'
+- Delete a news by id 
+- Request Arguments: news_id
+- Returns:  A object with two keys- 'success' and 'deleted' shows the id of the news deleted
+- Curl Request and Server Response example: 
+```
+curl http://127.0.0.1:5000/news/2 -X DELETE
+```
+```
+{"deleted":"2","success":true}
+```
+
+GET '/companies'
+- fetches a list of companies
+- Request Arguments: None
+- Returns: An object with news objects and success flag
+- Curl Request and Server Response example: 
+```
+curl http://127.0.0.1:5000/companies
+```
+
+```
+{"companies":
+[{"address":"410 Terry Avenue North, Seattle, WA, 98109-5210, United States","id":1,"industry":"Internet Retail","name":"Amazon","sector":"Consumer Cyclical"}],
+"success":true}
+```
+
+POST '/companies'
+- create a company 
+- Request Arguments: A json object contains 'name', 'address', 'sector', 'industry'
+- Returns:  A object with two keys- 'success', and 'created' shows the id of the new company
+- Curl Request and Server Response example: 
+```
+curl http://127.0.0.1:5000/companies -X POST -H "Content-Type: application/json" -d '{ "name": "Intel", "address": "Santa Clara, CA", "sector": "semiconductor", "industry": "manufacture" }'
+```
+```
+{"created":2,"success":true}
+```
+PATCH '/companies/int:id'
+- Update a company by id 
+- Request Arguments: company_id
+- Returns:  A object with three keys- 'success', 'edited' shows the id of the company updated, and the content of the updated company
+- Curl Request and Server Response example: 
+```
+curl http://127.0.0.1:5000/companies/2 -X PATCH -H "Content-Type: application/json" -d '{ "name": "AMD", "address": "One AMD Place P.O. Box 3453 Sunnyvale, CA 94088", "sector": "semiconductor", "industry": "manufacture" }'
+```
+
+```
+{"company":[{
+"address":"One AMD Place P.O. Box 3453 Sunnyvale, CA 94088",
+"id":2,
+"industry":"manufacture",
+"name":"AMD",
+"sector":"semiconductor"}],
+"edited":2,
+"success":true}
+
+```
+
+DELETE '/companies/int:id'
+- Delete a company by id 
+- Request Arguments: company_id
+- Returns:  A object with two keys- 'success' and 'deleted' shows the id of the company deleted
+- Curl Request and Server Response example: 
+```
+curl http://127.0.0.1:5000/companies/2 -X DELETE
+```
+```
+{"deleted":"2","success":true}
+```

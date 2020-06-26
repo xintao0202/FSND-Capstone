@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import Column, String, Integer, create_engine, Date, Float, DataTime
+from sqlalchemy import Column, String, Integer, create_engine, Date, Float, DateTime
 from flask_sqlalchemy import SQLAlchemy
 import json
 import datetime
@@ -43,9 +43,9 @@ def db_init_test_data():
 
     new_company = (Company(
         name = 'Amazon',
-        address = '410 Terry Avenue North, Seattle, WA, 98109-5210, United States'
-        sector = 'Consumer Cyclical'
-        industy = 'Internet Retail'
+        address = '410 Terry Avenue North, Seattle, WA, 98109-5210, United States',
+        sector = 'Consumer Cyclical',
+        industry = 'Internet Retail'
         ))
 
     # predict 0 means do nothing, 1 means buy, -1 means sell
@@ -72,9 +72,9 @@ class News(db.Model):
   id = Column(Integer, primary_key=True)
   title = Column(String)
   body = Column(String)
-  date_time = Column(DataTime)
+  date_time = Column(DateTime)
 
-  def __init__(self, name, gender, age):
+  def __init__(self, title, body, date_time):
     self.title = title
     self.body = body
     self.date_time = date_time
@@ -98,6 +98,14 @@ class News(db.Model):
       'date_time': self.date_time
     }
 
+# complete relationship models, company and news are N:N relationship
+# i.e. some news involves multipe companies
+# Predict is a table derived from other two tables
+Predict = db.Table('Predict', db.Model.metadata,
+    db.Column('company_id', db.Integer, db.ForeignKey('company.id')),
+    db.Column('news_id', db.Integer, db.ForeignKey('news.id')),
+    db.Column('stock_predict', db.Integer)
+)
 
 class Company(db.Model):  
   __tablename__ = 'company'
@@ -107,8 +115,10 @@ class Company(db.Model):
   address = Column(String)
   sector = Column(String)
   industry = Column(String)
+  news = db.relationship('News', secondary=Predict, backref=db.backref('predict', lazy='joined'))
 
-  def __init__(self, title, release_date) :
+
+  def __init__(self, name, address, sector, industry):
     self.name = name
     self.address = address
     self.sector = sector
@@ -135,14 +145,4 @@ class Company(db.Model):
     }
 
 
-# complete relationship models, company and news are N:N relationship
-# i.e. some news involves multipe companies
-class Predict(db.Model):  
-  __tablename__ = 'predict'
-
-  id = Column(Integer, primary_key=True)
-  company_id = db.Column(db.Integer, db.ForeignKey('Company.id'), nullable=False)
-  news_id=db.Column(db.Integer, db.ForeignKey('News.id'), nullable=False)
-  company=db.relationship('Company', backref='predict', cascade='all, delete', lazy=True)
-  news=db.relationship('News', backref='predict', cascade='all, delete', lazy=True)
 
