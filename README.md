@@ -182,3 +182,5 @@ https://<domain name>/authorize?audience=<identifier>&response_type=token&client
 Then assgin the roles to the signed up users
 
 Last re-submit the login page, which will direct to the URL with token
+
+5. Complete the unittest `test_app`
