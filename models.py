@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer, create_engine, Date, Float, Date
 from flask_sqlalchemy import SQLAlchemy
 import json
 import datetime
+from flask_migrate import Migrate, MigrateCommand
 
 #----------------------------------------------------------------------------#
 # Database setup
@@ -19,9 +20,12 @@ binds a flask application and a SQLAlchemy service
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    db = SQLAlchemy(app)
+    migrate = Migrate(app,db)
     db.app = app
     db.init_app(app)
-    db.create_all()
+    with app.app_context():
+      db.create_all()
 
 '''
 To create a clean database with no data 
