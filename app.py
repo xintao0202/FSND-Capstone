@@ -12,11 +12,11 @@ def create_app(test_config=None):
   app = Flask(__name__)
   setup_db(app)
   CORS(app)
-  # migrate = Migrate(app, db)
+  migrate = Migrate(app, db)
   # uncomment this if you want to start a new database on app refresh
-  # db_drop_and_create_all() 
+  db_drop_and_create_all() 
   # uncomment this if you want to use test data
-  # db_init_test_data()
+  db_init_test_data()
 
   # add access control headers
   @app.after_request
