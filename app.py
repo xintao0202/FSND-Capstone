@@ -49,7 +49,7 @@ def create_app(test_config=None):
     """
     Returns list of actors in json format
     """
-    return jsonify("Welcome to stock_predict API")
+    return jsonify("Welcome to stock_predict")
   
   #----------------------------------------------------------------------------#
   # Controllers for "news".
@@ -265,6 +265,7 @@ def create_app(test_config=None):
       return jsonify({
               "success": False,
               "error": 422,
+              "message": "unprocessable"
               }), 422
 
   @app.errorhandler(400)
@@ -272,6 +273,7 @@ def create_app(test_config=None):
       return jsonify({
               "success": False,
               "error": 400,
+              "message": "bad request"
               }), 400
 
   @app.errorhandler(404)
@@ -279,6 +281,7 @@ def create_app(test_config=None):
       return jsonify({
           'success': False,
           'error': 404,
+          'message': 'Resource not found'
       }), 404
 
   @app.errorhandler(AuthError)

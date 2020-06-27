@@ -157,17 +157,21 @@ system_manager_token = "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjZwT
 
 ```
 
+Note the Following Endpoint didn't include Token. I've been used Postman for Endpoint tests and all passed
+
+For 'PATCH' and 'POST', need to add Body content ("raw") for the inputs. There is a 'code' button if we want to convert the request to Curl.
+
+RBAC controls are implmented using the Tokens, which has to be included in the http request. If using token of different roles, it will throw permission error. All the authorization tests are autmated in test_app.py. Of course, it can be tested using Postman or Curl.
+
 GET '/' or POST '/'
 - this is welcome page
 ```
-curl --request GET --url <URL> --header 'Authorization: <token>' --header 'content-type: application/json'
+curl <URL>
+
 ```
-or
+- Response
 ```
-curl --request POST --url <URL> --header 'Authorization: <token>' --header 'content-type: application/json'
-```
-```
-{"Welcome to stock_predict API"}
+"Welcome to stock_predict API"
 ```
 
 GET '/news'  
@@ -176,9 +180,8 @@ GET '/news'
 - Returns: An object with news objects and success flag
 - Curl Request and Server Response example: 
 ```
-curl --request GET --url <URL>/news --header 'Authorization: <token>' --header 'content-type: application/json'
+curl <URL>/news  
 ```
-
 - Response
 ```
 {"news":
@@ -195,6 +198,7 @@ POST '/news'
 ```
 curl <URL>/news -X POST -H "Content-Type: application/json" -d '{ "title": "Intel new chip", "body": "Intel announced new generation of CPU", "date_time": "2020-05-30 15:30" }'
 ```
+- Response
 ```
 {"created":2,"success":true}
 ```
@@ -206,7 +210,7 @@ PATCH '/news/int:id'
 ```
 curl <URL>/news/2 -X PATCH -H "Content-Type: application/json" -d '{ "title": "AMD new chip", "body": "AMD announced new generation of CPU", "date_time": "2020-06-30 15:30" }'
 ````
-
+- Response
 ```
 {"news":[{"body":"AMD announced new generation of CPU",
 "date_time":"Tue, 30 Jun 2020 15:30:00 GMT","id":2,"title":"AMD new chip"}],
@@ -221,6 +225,7 @@ DELETE '/news/int:id'
 ```
 curl <URL>/news/2 -X DELETE
 ```
+- Response
 ```
 {"deleted":"2","success":true}
 ```
@@ -233,7 +238,7 @@ GET '/companies'
 ```
 curl <URL>/companies
 ```
-
+- Response
 ```
 {"companies":
 [{"address":"410 Terry Avenue North, Seattle, WA, 98109-5210, United States","id":1,"industry":"Internet Retail","name":"Amazon","sector":"Consumer Cyclical"}],
@@ -248,6 +253,7 @@ POST '/companies'
 ```
 curl <URL>/companies -X POST -H "Content-Type: application/json" -d '{ "name": "Intel", "address": "Santa Clara, CA", "sector": "semiconductor", "industry": "manufacture" }'
 ```
+- Response
 ```
 {"created":2,"success":true}
 ```
@@ -259,7 +265,7 @@ PATCH '/companies/int:id'
 ```
 curl <URL>/companies/2 -X PATCH -H "Content-Type: application/json" -d '{ "name": "AMD", "address": "One AMD Place P.O. Box 3453 Sunnyvale, CA 94088", "sector": "semiconductor", "industry": "manufacture" }'
 ```
-
+- Response
 ```
 {"company":[{
 "address":"One AMD Place P.O. Box 3453 Sunnyvale, CA 94088",
@@ -280,6 +286,7 @@ DELETE '/companies/int:id'
 ```
 curl <URL>/companies/2 -X DELETE
 ```
+- Response
 ```
 {"deleted":"2","success":true}
 ```
