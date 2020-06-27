@@ -41,6 +41,16 @@ def create_app(test_config=None):
 
   app.jinja_env.filters['datetime'] = format_datetime
 
+  
+  # Welcome page
+
+  @app.route('/', methods=['POST', 'GET'])
+  def home_page():
+    """
+    Returns list of actors in json format
+    """
+    return jsonify("Welcome to stock_predict API")
+  
   #----------------------------------------------------------------------------#
   # Controllers for "news".
   #----------------------------------------------------------------------------#
@@ -255,7 +265,6 @@ def create_app(test_config=None):
       return jsonify({
               "success": False,
               "error": 422,
-              "message": "unprocessable"
               }), 422
 
   @app.errorhandler(400)
@@ -263,7 +272,6 @@ def create_app(test_config=None):
       return jsonify({
               "success": False,
               "error": 400,
-              "message": "bad request"
               }), 400
 
   @app.errorhandler(404)
@@ -271,7 +279,6 @@ def create_app(test_config=None):
       return jsonify({
           'success': False,
           'error': 404,
-          'message': 'Resource not found'
       }), 404
 
   @app.errorhandler(AuthError)

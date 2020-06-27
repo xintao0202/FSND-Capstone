@@ -9,6 +9,9 @@ from flask_migrate import Migrate, MigrateCommand
 # Database setup
 #----------------------------------------------------------------------------#
 
+# local database
+# database_path = 'postgresql://postgres:123456@localhost:5432/company_news'
+
 database_path = 'postgres://vfirnxrvtpnrrl:ef0033d6fdca7a7e7e1c80e60a724e256bf83e1c658dda002c991d6319ee795d@ec2-18-214-119-135.compute-1.amazonaws.com:5432/d94v2kqjdd3lfs'
 
 db = SQLAlchemy()
@@ -26,6 +29,7 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     with app.app_context():
       db.create_all()
+      db_init_test_data()
 
 '''
 To create a clean database with no data 
